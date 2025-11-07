@@ -1,5 +1,7 @@
 # Nuxt API SDK
 
+🚧 **This module is under active development and may be subject to breaking changes.** 🚧
+
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
