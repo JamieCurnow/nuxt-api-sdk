@@ -1,32 +1,33 @@
-<!--
-Get your module up and running quickly.
-
-Find and replace all on all files (CMD+SHIFT+F):
-- Name: My Module
-- Package name: nuxt-api-sdk
-- Description: My new Nuxt module
--->
-
-# My Module
+# Nuxt API SDK
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-My new Nuxt module for doing amazing things.
+Tired of manually typing your API routes? Say goodbye to string-based API calls and hello to a fully-typed SDK, automatically generated from your Nuxt server routes!
 
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
-  <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/nuxt-api-sdk?file=playground%2Fapp.vue) -->
-  <!-- - [📖 &nbsp;Documentation](https://example.com) -->
+This module introspects your `server/api` directory and creates a chainable, fully-typed SDK that you can use anywhere in your Nuxt app.
+
+Instead of this:
+
+```typescript
+await $fetch(`/api/user/${uid}`, { method: 'get' })
+```
+
+You can now do this, with full autocompletion and type-safety:
+
+```typescript
+await useApi().user.uid(uid).get()
+```
 
 ## Features
 
-<!-- Highlight some of the features your module provide here -->
-
-- ⛰ &nbsp;Foo
-- 🚠 &nbsp;Bar
-- 🌲 &nbsp;Baz
+- ✅ &nbsp;**Zero-config:** Drop it in and it just works.
+- 🤖 &nbsp;**Automatic SDK Generation:** Your `useApi()` composable is always in sync with your API routes.
+- 🦾 &nbsp;**End-to-end Type-Safety:** Full type inference for route parameters and request bodies.
+- ⛓️ &nbsp;**Chainable API:** A fluent, easy-to-read API for interacting with your server.
+- динамик &nbsp;**Dynamic Routes:** Seamlessly handles dynamic route parameters.
 
 ## Quick Setup
 
@@ -36,7 +37,87 @@ Install the module to your Nuxt application with one command:
 npx nuxi module add nuxt-api-sdk
 ```
 
-That's it! You can now use My Module in your Nuxt app ✨
+That's it! You can now use the `useApi()` composable in your Nuxt app ✨
+
+## Usage
+
+### 1. Create your API routes
+
+Create your API endpoints in the `server/api` directory as you normally would.
+
+`server/api/user/[uid].get.ts`
+
+```typescript
+export default defineEventHandler(async (event) => {
+  const uid = getRouterParam(event, 'uid')
+  // ... your logic here
+})
+```
+
+### 2. Add types to your routes (optional)
+
+For type-safe request bodies, you can export a `body` type from your route handler file using the `defineRouteType` helper.
+
+`server/api/user/index.post.ts`
+
+```typescript
+import type { User } from '~/shared/types/User'
+
+type Body = Omit<User, 'uid'>
+export const body = defineRouteType<Body>() // <-- This defines the type for the request body
+
+export default defineEventHandler(async (event) => {
+  const body = await readBody<Body>(event)
+  // ... your logic here
+})
+```
+
+### 3. Use the SDK
+
+Now you can use the `useApi()` composable in your components and pages. The SDK is automatically generated and will mirror your API structure.
+
+```vue
+<script setup lang="ts">
+const user = ref(null)
+const userUid = ref('some-user-id')
+
+// GET /api/user/:uid
+user.value = await useApi().user.uid(userUid.value).get()
+
+// POST /api/user
+const newUser = await useApi().user.post({
+  body: {
+    email: 'some@email.com',
+    name: 'some name'
+  }
+})
+</script>
+```
+
+The SDK will automatically update as you add, remove, or modify your API routes. Happy coding!
+
+## Advanced Usage
+
+### Bring Your Own Fetch
+
+By default, the SDK uses Nuxt's built-in `$fetch` (from 'ofetch') for making API calls. However, if you want to use a custom fetch implementation, you can provide your own fetch function when calling the `useApi()` composable. Just as long as it has the same function signature as $fetch from 'ofetch'
+
+Example:
+
+```typescript
+import { $fetch } from 'ofetch'
+
+const myfetch = $fetch.create({
+  baseURL: 'https://api.example.com',
+  headers: {
+    Authorization: 'Bearer my-token'
+  }
+})
+
+const api = useApi({ fetch: myfetch })
+
+await api.user.uid(userUid.value).get()
+```
 
 ## Contribution
 
