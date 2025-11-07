@@ -110,7 +110,8 @@ export const generateSdk = (types: NitroEventHandler[]) => {
     if (obj._methods) {
       const pathWithParams = obj._path
       // TODO: type this up
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions, @typescript-eslint/no-explicit-any
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const [method, filePath] of Object.entries(obj._methods) as any) {
         let finalPath = pathWithParams
         if (parentParams.length) {

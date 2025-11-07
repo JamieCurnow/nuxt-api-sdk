@@ -1,54 +1,35 @@
-import withNuxt from './.nuxt/eslint.config.mjs'
-import globals from 'globals'
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+// @ts-check
+import { createConfigForNuxt } from '@nuxt/eslint-config/flat'
+// import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
-export default withNuxt(
-  eslintPluginPrettierRecommended,
-  {
-    files: ['**/*.ts', '**/*.js', '**/*.vue'],
-    ignores: [
-      'dist',
-      'node_modules',
-      '.nuxt',
-      '.output',
-      '.github',
+// Run `npx @eslint/config-inspector` to inspect the resolved config interactively
+export default createConfigForNuxt({
+  features: {
+    // Rules for module authors
+    tooling: true,
+    // Rules for formatting
+    stylistic: false,
+  },
+  dirs: {
+    src: [
+      './playground',
     ],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: {
-        ...globals.node,
-      },
-    },
+  },
+})
+  .append({
     rules: {
-      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      'arrow-parens': 'off',
-      'prefer-regex-literals': 'off',
-      'eol-last': 'error',
-      'vue/multi-word-component-names': 'off',
-      'vue/no-ref-as-operand': 'error',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      // Allow self-closing on HTML void elements like <input/>
+      'vue/html-self-closing': [
+        'warn',
         {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_',
-        },
-      ],
-      '@typescript-eslint/consistent-type-assertions': [
-        'error',
-        {
-          assertionStyle: 'never',
-        },
-      ],
-    },
-  },
-  {
-    files: ['**/__tests__/*.{j,t}s?(x)', '**/tests/unit/**/*.spec.{j,t}s?(x)'],
-    languageOptions: {
-      globals: {
-        ...globals.jest,
-      },
-    },
-  },
-)
+          html: {
+            void: 'always', // Allow self-closing on void elements like input, img, br
+            normal: 'never', // Don't allow self-closing on normal elements like div
+            component: 'always' // Allow self-closing on components
+          },
+          svg: 'always',
+          math: 'always'
+        }
+      ]
+    }
+  })
