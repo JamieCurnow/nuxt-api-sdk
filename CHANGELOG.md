@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.4
+
+[compare changes](https://github.com/jamiecurnow/nuxt-api-sdk/compare/v0.0.3...v0.0.4)
+
+### 🏡 Chore
+
+- **release:** V0.0.3 ([dcddb41](https://github.com/jamiecurnow/nuxt-api-sdk/commit/dcddb41))
+
+### ❤️ Contributors
+
+- Jamie Curnow ([@JamieCurnow](https://github.com/JamieCurnow))
+
 ## v0.0.3
 
 [compare changes](https://github.com/jamiecurnow/nuxt-api-sdk/compare/v0.0.2...v0.0.3)
