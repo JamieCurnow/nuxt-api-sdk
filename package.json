@@ -1,6 +1,6 @@
 {
   "name": "nuxt-api-sdk",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Turn nuxt server routes into an SDK.",
   "repository": "jamiecurnow/nuxt-api-sdk",
   "license": "MIT",
