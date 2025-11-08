@@ -1,4 +1,5 @@
 import { _useApi } from '#build/useApi'
+import type { $Fetch } from 'ofetch'
 
 // this just means you can go useApi() in userland
 // rather than having to import { useApi } from '#build/useApi'
@@ -14,4 +15,4 @@ import { _useApi } from '#build/useApi'
  * The actual type signature will be based on the server routes
  * in your project.
  */
-export const useApi = _useApi
+export const useApi = (opts: { fetch: $Fetch }) => _useApi(opts)
