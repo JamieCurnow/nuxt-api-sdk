@@ -13,7 +13,7 @@ export const generateSdk = (types: NitroEventHandler[]) => {
     '',
     `type GetBody<T> = T extends { body: infer B } ? { body: B } : { body: FetchOptions['body'] }`,
     '',
-    'export const _useApi = (_apiOpts?: { fetch: typeof _$fetch }) => {',
+    'export const _useApi = (_apiOpts?: { fetch?: typeof _$fetch }) => {',
     '  const $fetch = _apiOpts?.fetch || _$fetch',
     '  return {'
   ]
@@ -25,7 +25,7 @@ export const generateSdk = (types: NitroEventHandler[]) => {
   for (const handler of types) {
     const { handler: filePath, route: path, method } = handler
     // Skip internal API routes
-    console.log(path)
+    // console.log(path)
     if (!path || !filePath || !method) continue
     if (path.startsWith('/_')) continue
     const parts = path.split('/').filter(Boolean)
