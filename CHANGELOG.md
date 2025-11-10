@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.5
+
+[compare changes](https://github.com/jamiecurnow/nuxt-api-sdk/compare/v0.0.4...v0.0.5)
+
+### 🏡 Chore
+
+- **release:** V0.0.4 ([f596573](https://github.com/jamiecurnow/nuxt-api-sdk/commit/f596573))
+
+### ❤️ Contributors
+
+- Jamie Curnow ([@JamieCurnow](https://github.com/JamieCurnow))
+
 ## v0.0.4
 
 [compare changes](https://github.com/jamiecurnow/nuxt-api-sdk/compare/v0.0.3...v0.0.4)
