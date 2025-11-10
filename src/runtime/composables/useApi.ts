@@ -15,4 +15,4 @@ import type { $Fetch } from 'ofetch'
  * The actual type signature will be based on the server routes
  * in your project.
  */
-export const useApi = (opts?: { fetch?: $Fetch }) => _useApi(opts)
+export const useApi = (opts?: { fetch?: $Fetch }): ReturnType<typeof _useApi> => _useApi(opts)
