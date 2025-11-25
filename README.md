@@ -29,7 +29,7 @@ await useApi().user.uid(uid).get()
 - 🤖 &nbsp;**Automatic SDK Generation:** Your `useApi()` composable is always in sync with your API routes.
 - 🦾 &nbsp;**End-to-end Type-Safety:** Full type inference for route parameters and request bodies.
 - ⛓️ &nbsp;**Chainable API:** A fluent, easy-to-read API for interacting with your server.
-- динамик &nbsp;**Dynamic Routes:** Seamlessly handles dynamic route parameters.
+- 🔀 &nbsp;**Dynamic Routes:** Seamlessly handles dynamic route parameters.
 
 ## Quick Setup
 
