@@ -29,7 +29,8 @@ await useApi().user.uid(uid).get()
 - 🤖 &nbsp;**Automatic SDK Generation:** Your `useApi()` composable is always in sync with your API routes.
 - 🦾 &nbsp;**End-to-end Type-Safety:** Full type inference for route parameters and request bodies.
 - ⛓️ &nbsp;**Chainable API:** A fluent, easy-to-read API for interacting with your server.
-- динамик &nbsp;**Dynamic Routes:** Seamlessly handles dynamic route parameters.
+- 🔀 &nbsp;**Dynamic Routes:** Handles route parameters (`[uid]`) and catch-alls (`[...slug]`), URL-encoded for you.
+- 🧭 &nbsp;**Route-typed fetch:** Uses Nuxt 4.6's `experimental.routeTypedFetch` types when you turn it on.
 
 ## Quick Setup
 
@@ -58,7 +59,41 @@ export default defineEventHandler(async (event) => {
 
 ### 2. Add types to your routes (optional)
 
-For type-safe request bodies, you can export a `body` type from your route handler file using the `defineRouteType` helper.
+Response types are inferred from your handlers automatically.
+
+#### With `experimental.routeTypedFetch` (Nuxt 4.6+)
+
+If you've turned on Nuxt's route-typed fetch, the SDK uses the same types as Nuxt's `$fetch`, so a body or query you declare on the handler is typed (and a required body is required) with nothing extra:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['nuxt-api-sdk'],
+  experimental: {
+    routeTypedFetch: true
+  }
+})
+```
+
+`server/api/user/[uid]/index.patch.ts`
+
+```typescript
+export default defineEventHandler<{ body: Partial<User>; query: { notify?: 'yes' | 'no' } }>(
+  async (event) => {
+    // ...
+  }
+)
+```
+
+```typescript
+await useApi()
+  .user.uid(uid)
+  .patch({ body: { name: 'Jamie' }, query: { notify: 'yes' } })
+```
+
+#### With `defineRouteType` (any Nuxt 4 version)
+
+You can also export a `body` and/or `query` type from your route handler file using the `defineRouteType` helper. These take priority over the route-typed ones when both are present.
 
 `server/api/user/index.post.ts`
 
@@ -67,6 +102,7 @@ import type { User } from '~/shared/types/User'
 
 type Body = Omit<User, 'uid'>
 export const body = defineRouteType<Body>() // <-- This defines the type for the request body
+// export const query = defineRouteType<{ notify?: string }>() // <-- and this the query
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<Body>(event)
@@ -98,11 +134,24 @@ const newUser = await useApi().user.post({
 
 The SDK will automatically update as you add, remove, or modify your API routes. Happy coding!
 
+### How routes map to the SDK
+
+| File                                     | SDK call                                                                  |
+| ---------------------------------------- | ------------------------------------------------------------------------- |
+| `server/api/user/index.post.ts`          | `useApi().user.post()`                                                    |
+| `server/api/user/[uid]/index.get.ts`     | `useApi().user.uid(uid).get()`                                            |
+| `server/api/org/[org-id]/members.get.ts` | `useApi().org.orgId(id).members.get()`                                    |
+| `server/api/docs/[...slug].get.ts`       | `useApi().docs.slug('a/b').get()`                                         |
+| `server/api/blog/[...].ts`               | `useApi().blog.catchAll('a/b').get()`                                     |
+| `server/api/health.ts` (no method)       | `useApi().health.get()` / `.post()` / `.put()` / `.patch()` / `.delete()` |
+
+Segments are camelCased (`my-route` becomes `myRoute`). Only routes under `server/api` are included; `server/routes` and routes starting with `_` are skipped.
+
 ## Advanced Usage
 
 ### Bring Your Own Fetch
 
-By default, the SDK uses Nuxt's built-in `$fetch` (from 'ofetch') for making API calls. However, if you want to use a custom fetch implementation, you can provide your own fetch function when calling the `useApi()` composable. Just as long as it has the same function signature as $fetch from 'ofetch'
+By default, the SDK uses Nuxt's `useRequestFetch()`, so calls made during SSR go straight to your server handlers and forward the incoming request's headers and cookies (falling back to the global `$fetch` outside a Nuxt context). If you want to use a custom fetch implementation, you can provide your own fetch function when calling the `useApi()` composable, as long as it has the same function signature as `$fetch`.
 
 Example:
 
