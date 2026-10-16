@@ -1,0 +1,52 @@
+name: release
+
+# Publishes to npm when a version tag is pushed (`npm run release` creates and pushes it).
+# Uses npm trusted publishing, so no npm token or 2FA is needed:
+# https://docs.npmjs.com/trusted-publishers
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write # create the GitHub release
+  id-token: write # npm trusted publishing
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # trusted publishing needs npm >= 11.5.1
+      - run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Playground prepare
+        run: npm run dev:prepare
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Type tests
+        run: npm run test:types
+
+      - name: Publish
+        run: npm publish
+
+      - name: GitHub release
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
