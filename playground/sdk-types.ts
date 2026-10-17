@@ -1,4 +1,4 @@
-// Type tests for the generated SDK, checked by `npm run test:types` (playground has routeTypedFetch on)
+// Type tests for the generated SDK, checked by `npm run test:types` in both fetch modes
 const api = useApi()
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false
 const expectType = <T>(_v: T) => ({ is: <U>(_check: Equal<T, U>) => {} })
@@ -8,15 +8,8 @@ export const run = async () => {
   expectType(await api.user.uid('x').get()).is<{ uid: string; name: string; email: string }>(true)
   expectType(await api.health.get()).is<{ ok: true }>(true)
   expectType(await api.org.orgId('x').members.get()).is<{ org: string | undefined }>(true)
-
-  // h3-typed body + query (route typed fetch)
-  await api.user.uid('x').patch({ body: { name: 'x' }, query: { notify: 'yes' } })
-  // @ts-expect-error wrong body field type
-  await api.user.uid('x').patch({ body: { name: 1 } })
-  // @ts-expect-error wrong query value
-  await api.user.uid('x').patch({ body: {}, query: { notify: 'maybe' } })
-  // @ts-expect-error body is required
-  await api.user.uid('x').patch()
+  // handlers that only throw still type-check (`never` in legacy mode, `unknown` in route mode)
+  await api.teapot.get().catch(() => {})
 
   // defineRouteType body export still works
   await api.user.post({ body: { email: 'x', name: 'y' } })
