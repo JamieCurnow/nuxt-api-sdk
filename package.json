@@ -2,7 +2,10 @@
   "name": "nuxt-api-sdk",
   "version": "0.0.5",
   "description": "Turn nuxt server routes into an SDK.",
-  "repository": "jamiecurnow/nuxt-api-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JamieCurnow/nuxt-api-sdk.git"
+  },
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -27,7 +30,7 @@
     "dev": "npm run dev:prepare && nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "release": "npm run lint && npm run test && npm run test:types && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "release": "npm run lint && npm run test && npm run test:types && changelogen --release && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run --project unit --coverage && vitest run --project e2e",
     "test:watch": "vitest watch",
