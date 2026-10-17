@@ -30,11 +30,12 @@
     "dev": "npm run dev:prepare && nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "release": "npm run lint && npm run test && npm run test:types && changelogen --release && git push --follow-tags",
+    "release": "npm run lint && npm run test && npm run test:types && npm run test:smoke && changelogen --release && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run --project unit --coverage && vitest run --project e2e",
     "test:watch": "vitest watch",
-    "test:types": "vue-tsc --noEmit && cd playground && nuxi prepare && vue-tsc --noEmit && LEGACY_FETCH=1 nuxi prepare && vue-tsc --noEmit -p tsconfig.legacy.json && nuxi prepare"
+    "test:types": "vue-tsc --noEmit && cd playground && nuxi prepare && vue-tsc --noEmit && LEGACY_FETCH=1 nuxi prepare && vue-tsc --noEmit -p tsconfig.legacy.json && nuxi prepare",
+    "test:smoke": "bash smoke/run.sh"
   },
   "dependencies": {
     "@nuxt/kit": "^4.6.1"

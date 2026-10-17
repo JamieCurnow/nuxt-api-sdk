@@ -194,10 +194,16 @@ await api.user.uid(userUid.value).get()
   # Run Vitest
   npm run test
   npm run test:watch
+
+  # Type tests (both fetch modes) and the end-to-end smoke test in a fresh Nuxt app
+  npm run test:types
+  npm run test:smoke
   
   # Release new version
   npm run release
   ```
+
+  See [TESTING.md](./TESTING.md) for what each test covers and how releases are published.
 
 </details>
 
