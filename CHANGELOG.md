@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.1
+
+[compare changes](https://github.com/JamieCurnow/nuxt-api-sdk/compare/v0.1.0...v0.1.1)
+
+### 🩹 Fixes
+
+- Type-check handlers that only throw, and type test both fetch modes ([#3](https://github.com/JamieCurnow/nuxt-api-sdk/pull/3))
+
+### ❤️ Contributors
+
+- Jamie Curnow ([@JamieCurnow](https://github.com/JamieCurnow))
+
 ## v0.1.0
 
 [compare changes](https://github.com/JamieCurnow/nuxt-api-sdk/compare/v0.0.5...v0.1.0)
