@@ -1,6 +1,6 @@
 {
   "name": "nuxt-api-sdk",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Turn nuxt server routes into an SDK.",
   "repository": {
     "type": "git",

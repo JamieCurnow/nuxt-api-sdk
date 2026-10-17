@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.0
+
+[compare changes](https://github.com/JamieCurnow/nuxt-api-sdk/compare/v0.0.5...v0.1.0)
+
+### 🚀 Enhancements
+
+- Support experimental.routeTypedFetch and fix SSR, dev reload and route handling ([#1](https://github.com/JamieCurnow/nuxt-api-sdk/pull/1))
+
+### 🤖 CI
+
+- Publish releases from GitHub Actions with npm trusted publishing ([#2](https://github.com/JamieCurnow/nuxt-api-sdk/pull/2))
+
+### ❤️ Contributors
+
+- Jamie Curnow ([@JamieCurnow](https://github.com/JamieCurnow))
+
 ## v0.0.5
 
 [compare changes](https://github.com/jamiecurnow/nuxt-api-sdk/compare/v0.0.4...v0.0.5)
