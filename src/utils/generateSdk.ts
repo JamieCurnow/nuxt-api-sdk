@@ -114,7 +114,9 @@ export const generateSdk = (handlers: NitroEventHandler[], opts: GenerateSdkOpti
   content.push(
     '',
     'export const _useApi = (_apiOpts?: { fetch?: ApiFetch }) => {',
-    '  const $fetch: ApiFetch = _apiOpts?.fetch || (globalThis.$fetch as unknown as ApiFetch)',
+    '  // generic so each method infers its own response type, including `never` for handlers that only throw',
+    '  // eslint-disable-next-line @typescript-eslint/no-explicit-any',
+    '  const $fetch = (_apiOpts?.fetch || globalThis.$fetch) as <T>(request: string, opts?: any) => Promise<T>',
     '  return {'
   )
 
